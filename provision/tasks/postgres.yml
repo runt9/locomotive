@@ -1,0 +1,46 @@
+- name: Postgres | Install PostgreSQL
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - postgresql
+    - libpq-dev
+    - python-psycopg2
+
+- name: Postgres | Install PostgreSQL configuration
+  copy:
+    src: postgresql.conf
+    dest: /etc/postgresql/9.4/main/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: 0644
+
+- name: Postgres | Install PostgreSQL security configuration
+  copy:
+    src: files/pg_hba.conf
+    dest: /etc/postgresql/9.4/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: 0640
+
+- name: Postgres | Ensure PostgreSQL is restarted
+  service:
+    name: postgresql
+    state: restarted
+
+- name: Postgres | Setup initial database
+  postgresql_db:
+    name: locomotive
+    state: present
+  sudo_user: postgres
+
+- name: Postgres | Setup initial user
+  postgresql_user:
+    name: locomotive
+    password: locomotive
+    db: locomotive
+    priv: ALL
+    state: present
+  sudo_user: postgres
