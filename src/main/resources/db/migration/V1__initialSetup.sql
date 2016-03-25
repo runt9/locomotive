@@ -1,0 +1,50 @@
+CREATE TABLE IF NOT EXISTS project (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS release (
+  id BIGSERIAL PRIMARY KEY,
+  project_id BIGINT REFERENCES project,
+  name VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  released_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS story (
+  id BIGSERIAL PRIMARY KEY,
+  release_id BIGINT REFERENCES release,
+  name VARCHAR(250) NOT NULL,
+  notes TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tag (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS story_tags (
+  id BIGSERIAL PRIMARY KEY,
+  story_id BIGINT REFERENCES story,
+  tag_id BIGINT REFERENCES tag
+);
+
+CREATE TABLE IF NOT EXISTS environment (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+-- Default environments
+INSERT INTO environment (name) VALUES ('dev'), ('stage'), ('prod');
+
+CREATE TABLE IF NOT EXISTS story_test (
+  id BIGSERIAL PRIMARY KEY,
+  story_id BIGINT REFERENCES story,
+  test_notes TEXT DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS story_test_environments (
+  id BIGSERIAL PRIMARY KEY,
+  story_test_id BIGINT REFERENCES story_test,
+  environment_id BIGINT REFERENCES environment
+);
