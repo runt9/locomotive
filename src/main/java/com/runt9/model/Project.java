@@ -1,16 +1,35 @@
 package com.runt9.model;
 
-import javax.persistence.*;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@Entity
+@Document(indexName = "project", type = "project")
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
+    String id;
     String name;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    List<Release> releases;
+    public Project() {
+    }
+
+    public Project(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
