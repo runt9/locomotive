@@ -1,28 +1,52 @@
 package com.runt9.model;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
 public class Story {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "release_id")
-    Release release;
-
     String name;
-
     String notes;
+    List<StoryTest> tests;
+    List<String> tags;
 
-    @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    List<StoryTest> storyTests;
+    public Story() {
+    }
 
-    @ManyToMany
-    @JoinTable(name = "story_tags",
-            joinColumns = {@JoinColumn(name = "story_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    List<Tag> tags;
+    public Story(String name, String notes, List<StoryTest> tests, List<String> tags) {
+        this.name = name;
+        this.notes = notes;
+        this.tests = tests;
+        this.tags = tags;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public List<StoryTest> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<StoryTest> tests) {
+        this.tests = tests;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }

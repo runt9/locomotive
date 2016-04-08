@@ -1,0 +1,24 @@
+{
+  "projectId": "AVP4CZC_fHDLk2mafJTA",
+  "name": "Test Release 1",
+  "stories": [
+    {
+      "name": "Test Story 1",
+      "notes": "lorem ipsum etc",
+      "tests": [
+        {"testNotes": "foo bar baz bash", "environments": ["dev", "stage", "prod"]},
+        {"testNotes": "bar foo bash baz", "environments": ["dev", "prod"]}
+      ],
+      "tags": ["tag1", "tag2", "tag3"]
+    },
+    {
+      "name": "Test Story 2",
+      "notes": "lorem ipsum foobar",
+      "tests": [
+        {"testNotes": "achey breaky heart", "environments": ["stage", "prod"]},
+        {"testNotes": "nononononon", "environments": ["prod"]}
+      ],
+      "tags": ["tag1", "tag3", "tag4"]
+    }
+  ]
+}
