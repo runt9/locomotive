@@ -4,9 +4,9 @@ Locomotive is an open-source release train and quality assurance management tool
 # Developer Environment
 Spinning up Locomotive locally is fairly easy, and it's highly recommended you use an IDE, such as IntelliJ IDEA to run the app itself locally. Because the in-memory Elasticsearch service can persist all of its data right into the root of your local repo, there's no need for anything like a Vagrant box!
 
-Simply compile the app with:
+Simply package the app with:
 ```
-mvn compile
+mvn package
 ```
 
 Then start it with:
