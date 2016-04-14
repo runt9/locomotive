@@ -6,10 +6,13 @@
 
     <properties>
         <locomotive.version>0.0.1</locomotive.version>
+
         <angular.version>1.5.3</angular.version>
         <angular.bootstrap.version>0.12.2</angular.bootstrap.version>
         <angular.spring-data-rest.version>0.4.2</angular.spring-data-rest.version>
+        <angular.new-router.version>0.5.3</angular.new-router.version>
         <bootstrap.version>3.3.6</bootstrap.version>
+        <jquery.version>2.2.3</jquery.version>
     </properties>
 
     <parent>
@@ -51,6 +54,13 @@
 
         <!-- Webjars -->
 
+        <!-- jQuery -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${jquery.version}</version>
+        </dependency>
+
         <!-- Angular and modules -->
         <dependency>
             <groupId>org.webjars.npm</groupId>
@@ -68,6 +78,12 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>angular-bootstrap</artifactId>
             <version>${angular.bootstrap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>angular-resource</artifactId>
+            <version>${angular.version}</version>
         </dependency>
 
         <!-- Bootstrap -->
