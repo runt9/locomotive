@@ -9,8 +9,9 @@
 
         <java.version>1.8</java.version>
 
-        <maven.javadoc.version>2.10.3</maven.javadoc.version>
         <maven.checkstyle.version>2.17</maven.checkstyle.version>
+        <maven.javadoc.version>2.10.3</maven.javadoc.version>
+        <maven.reports.version>2.8</maven.reports.version>
 
         <angular.version>1.5.3</angular.version>
         <angular.bootstrap.version>0.12.2</angular.bootstrap.version>
@@ -27,6 +28,45 @@
     <groupId>com.runt9</groupId>
     <artifactId>locomotive</artifactId>
     <version>${locomotive.version}</version>
+    <name>Locomotive</name>
+    <description>Locomotive is an open-source release train and quality assurance management tool. More details will be provided as time goes by and the application is currently a work-in-progress.</description>
+    <url>https://github.com/runt9/locomotive</url>
+
+    <issueManagement>
+        <url>https://github.com/runt9/locomotive/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://raw.githubusercontent.com/runt9/locomotive/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Runt9 Open Source</name>
+        <url>https://github.com/runt9</url>
+    </organization>
+
+    <scm>
+        <url>https://github.com/runt9/locomotive</url>
+    </scm>
+
+    <ciManagement>
+        <system>TeamCity</system>
+        <url>http://teamcity.runt9.com</url>
+    </ciManagement>
+
+    <developers>
+        <developer>
+            <email>runt9ab@gmail.com</email>
+            <name>Alex Vester</name>
+            <url>https://github.com/runt9</url>
+            <id>runt9</id>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -124,6 +164,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.javadoc.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven.reports.version}</version>
             </plugin>
         </plugins>
     </reporting>
