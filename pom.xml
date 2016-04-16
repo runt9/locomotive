@@ -6,6 +6,12 @@
 
     <properties>
         <locomotive.version>0.0.1</locomotive.version>
+
+        <java.version>1.8</java.version>
+
+        <maven.javadoc.version>2.10.3</maven.javadoc.version>
+        <maven.checkstyle.version>2.17</maven.checkstyle.version>
+
         <angular.version>1.5.3</angular.version>
         <angular.bootstrap.version>0.12.2</angular.bootstrap.version>
         <angular.spring-data-rest.version>0.4.2</angular.spring-data-rest.version>
@@ -91,10 +97,34 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
