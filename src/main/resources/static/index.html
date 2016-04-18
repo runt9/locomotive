@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-COMPATIBLE", content="IE=edge">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <title>Locomotive</title>
 
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
 
     <script type="text/javascript" src="/webjars/jquery/2.2.3/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/3.3.6/dist/js/bootstrap.min.js"></script>
@@ -13,10 +14,50 @@
     <script type="text/javascript" src="/webjars/angular-resource/1.5.3/angular-resource.min.js"></script>
     <script type="text/javascript" src="/webjars/angular-bootstrap/0.12.2/ui-bootstrap.js"></script>
     <script type="text/javascript" src="/webjars/angular-spring-data-rest/0.4.2/dist/angular-spring-data-rest.js"></script>
+    <script type="text/javascript" src="/webjars/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body ng-app="locomotive">
-    <div class="container" ng-controller="ProjectController"></div>
+    <div class="container index-container" ng-controller="IndexController">
+        <div class="alert alert-dismissable alert-danger" ng-show="messages.error">
+            {{messages.error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="alert alert-dismissable alert-success" ng-show="messages.success">
+            {{messages.success}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div ui-view></div>
+    </div>
 </body>
 </html>
+
+<script type="text/ng-template" id="projectHome.html">
+    <div class="project-container">
+        <h2>Welcome to Locomotive!</h2>
+        <h4>
+            Locomotive is an open-source release train and quality assurance management tool.
+            Below are the current projects that already exist in the system.
+            Click on one to view the releases for that project, or create a new project!
+        </h4>
+
+        <button class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
+        <div class="project-list" ng-repeat="project in projectHome.projects">
+            <a ui-sref="project({projectId: project.id})"><h3>{{project.name}}</h3></a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="selectedProject.html">
+    <div class="selected-project-container">
+        <div ui-view></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="selectedRelease.html">
+    <div class="selected-release-container">
+
+    </div>
+</script>
