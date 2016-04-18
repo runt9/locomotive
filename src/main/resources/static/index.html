@@ -11,31 +11,32 @@
     <script type="text/javascript" src="/webjars/jquery/2.2.3/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/3.3.6/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/webjars/angular/1.5.3/angular.js"></script>
-    <script type="text/javascript" src="/webjars/angular-resource/1.5.3/angular-resource.min.js"></script>
     <script type="text/javascript" src="/webjars/angular-bootstrap/0.12.2/ui-bootstrap.js"></script>
-    <script type="text/javascript" src="/webjars/angular-spring-data-rest/0.4.2/dist/angular-spring-data-rest.js"></script>
     <script type="text/javascript" src="/webjars/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+    <script type="text/javascript" src="/webjars/ng-lodash/0.4.0/build/ng-lodash.min.js"></script>
 
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body ng-app="locomotive">
-    <div class="container index-container" ng-controller="IndexController">
-        <div class="alert alert-dismissable alert-danger" ng-show="messages.error">
-            {{messages.error}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="alert alert-dismissable alert-success" ng-show="messages.success">
-            {{messages.success}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div id="indexContainer" ng-controller="IndexController">
+        <div id="messagesContainer">
+            <div class="alert alert-dismissable alert-danger" ng-show="messages.error">
+                {{messages.error}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="alert alert-dismissable alert-success" ng-show="messages.success">
+                {{messages.success}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
         </div>
 
-        <div ui-view></div>
+        <div id="projectInnerContainer" ui-view></div>
     </div>
 </body>
 </html>
 
 <script type="text/ng-template" id="projectHome.html">
-    <div class="project-container">
+    <div id="projectContainer">
         <h2>Welcome to Locomotive!</h2>
         <h4>
             Locomotive is an open-source release train and quality assurance management tool.
@@ -43,21 +44,54 @@
             Click on one to view the releases for that project, or create a new project!
         </h4>
 
-        <button class="btn btn-primary pull-right"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
-        <div class="project-list" ng-repeat="project in projectHome.projects">
-            <a ui-sref="project({projectId: project.id})"><h3>{{project.name}}</h3></a>
-        </div>
+        <button class="btn btn-primary pull-right" ng-click="projectToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
+        <ul id="projectList">
+            <li ng-show="projectToAdd.name !== undefined">
+                <div id="projectToAdd">
+                    <div id="projectToAddControls">
+                        <i class="glyphicon glyphicon-save project-action" ng-click="saveProject()"></i>
+                        <i class="glyphicon glyphicon-remove project-action" ng-click="projectToAdd = {}"></i>
+                    </div>
+
+                    <input class="form-control" type="text" ng-model="projectToAdd.name" placeholder="Enter Project Name">
+                </div>
+            </li>
+            <li ng-repeat="project in projects | orderBy: 'name'">
+                <a ui-sref="project({projectId: project.id})">{{project.name}}</a>
+            </li>
+        </ul>
     </div>
 </script>
 
 <script type="text/ng-template" id="selectedProject.html">
-    <div class="selected-project-container">
-        <div ui-view></div>
+    <button id="deleteProject" class="btn btn-danger pull-right" ng-click="removeProject()"><i class="glyphicon glyphicon-remove"></i>Delete Project</button>
+
+    <div id="projectName" ng-show="!editingName">
+        <h2 ng-show="!editingName">
+            {{project.name}}
+            <i id="editProjectName" class="glyphicon glyphicon-edit project-action" ng-click="editingName = true"></i>
+        </h2>
+    </div>
+
+    <div id="projectNameEditing" ng-show="editingName">
+        <i id="saveProjectName" class="glyphicon glyphicon-save project-action" ng-click="saveProject()"></i>
+        <input class="form-control" type="text" ng-model="project.name" ng-show="editingName">
+    </div>
+
+    <div id="selectedProjectContainer">
+        <div id="projectSidebar" class="col-xs-2">
+            <h2>Releases</h2>
+            <ul id="releaseList">
+                <li ng-repeat="release in releases"><a ui-sref="project.release({releaseId: release.id})">{{release.name}}</a></li>
+            </ul>
+        </div>
+
+        <div ui-view class="col-xs-10"></div>
     </div>
 </script>
 
 <script type="text/ng-template" id="selectedRelease.html">
-    <div class="selected-release-container">
+    <div id="selectedReleaseContainer">
 
     </div>
 </script>
