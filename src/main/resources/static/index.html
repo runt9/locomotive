@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index Test</title>
+    <meta http-equiv="X-UA-COMPATIBLE", content="IE=edge">
+    <title>Locomotive</title>
 
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/dist/css/bootstrap.min.css">
 
-    <script type="text/javascript" src="/webjars/angular/1.5.3/angular.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery/2.2.3/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/3.3.6/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/webjars/angular-bootstrap/0.12.2/ui-bootstrap.min.js"></script>
-    <script type="text/javascript" src="/webjars/angular-spring-data-rest/0.4.2/dist/angular-spring-data-rest.min.js"></script>
+    <script type="text/javascript" src="/webjars/angular/1.5.3/angular.js"></script>
+    <script type="text/javascript" src="/webjars/angular-resource/1.5.3/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/webjars/angular-bootstrap/0.12.2/ui-bootstrap.js"></script>
+    <script type="text/javascript" src="/webjars/angular-spring-data-rest/0.4.2/dist/angular-spring-data-rest.js"></script>
+
+    <script type="text/javascript" src="js/app.js"></script>
 </head>
-<body>
-    Hello world!
+<body ng-app="locomotive">
+    <div class="container" ng-controller="ProjectController"></div>
 </body>
 </html>
