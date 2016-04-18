@@ -1,4 +1,87 @@
-.index-container {
+html, body, #indexContainer, #projectInnerContainer {
+    height: 100%;
+}
+
+#indexContainer {
     text-align: center;
-    margin-top: 30px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+#messagesContainer {
+    margin-top: 20px;
+}
+
+#projectList {
+    font-size: 1.3em;
+    list-style-type: none;
+    text-align: left;
+}
+
+#projectToAdd {
+    width: 20%;
+}
+
+#projectToAdd input {
+    width: 80%;
+}
+
+#projectToAddControls {
+    float: right;
+    margin-top: 5px;
+}
+
+.project-action:hover {
+    color: #76b6cf;
+    cursor: pointer;
+}
+
+#projectInnerContainer {
+    padding: 10px 0;
+}
+
+#editProjectName {
+    font-size: 0.4em;
+    vertical-align: super;
+}
+
+#projectNameEditing {
+    width: 20%;
+    margin: 0 auto 20px;
+}
+
+#projectNameEditing input {
+    width: 90%;
+}
+
+#saveProjectName {
+    float: right;
+    margin-top: 5px;
+    font-size: 1.3em;
+}
+
+#deleteProject {
+    margin-top: 20px;
+}
+
+#selectedProjectContainer {
+    height: 100%;
+    overflow: auto;
+    border: 2px solid #aaaaaa;
+    border-radius: 2px;
+}
+
+#projectSidebar {
+    border-right: 2px solid #dddddd;
+    height: 100%;
+    padding: 0;
+}
+
+#projectSidebar h2 {
+    border-bottom: 2px solid #dddddd;
+}
+
+#releaseList {
+    list-style-type: none;
+    padding-left: 0;
 }
