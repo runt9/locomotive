@@ -16,7 +16,7 @@
         <angular.version>1.5.3</angular.version>
         <angular.bootstrap.version>0.12.2</angular.bootstrap.version>
         <angular.spring-data-rest.version>0.4.2</angular.spring-data-rest.version>
-        <angular.new-router.version>0.5.3</angular.new-router.version>
+        <angular.ui-router.version>0.2.18</angular.ui-router.version>
         <bootstrap.version>3.3.6</bootstrap.version>
         <jquery.version>2.2.3</jquery.version>
     </properties>
@@ -129,6 +129,12 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>angular-resource</artifactId>
             <version>${angular.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-ui-router</artifactId>
+            <version>${angular.ui-router.version}</version>
         </dependency>
 
         <!-- Bootstrap -->
