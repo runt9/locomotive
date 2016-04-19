@@ -80,26 +80,28 @@
     </div>
 
     <div id="selectedProjectContainer">
-        <div id="projectSidebar" class="col-xs-2">
+        <div id="projectSidebar">
             <h2>Releases</h2>
-            <button class="btn btn-success" ng-click="releaseToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Release</button>
-            <ul id="releaseList">
-                <li ng-show="releaseToAdd.name !== undefined">
-                    <div id="releaseToAdd">
-                        <div id="releaseToAddControls">
-                            <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
-                            <i class="glyphicon glyphicon-remove crud-action" ng-click="releaseToAdd = {}"></i>
+            <div id="releaseListContainer">
+                <button class="btn btn-success" ng-click="releaseToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Release</button>
+                <ul id="releaseList">
+                    <li ng-show="releaseToAdd.name !== undefined">
+                        <div id="releaseToAdd">
+                            <div id="releaseToAddControls">
+                                <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                                <i class="glyphicon glyphicon-remove crud-action" ng-click="releaseToAdd = {}"></i>
+                            </div>
+
+                            <input class="form-control" type="text" ng-model="releaseToAdd.name" placeholder="Enter Release Name">
                         </div>
+                    </li>
 
-                        <input class="form-control" type="text" ng-model="releaseToAdd.name" placeholder="Enter Release Name">
-                    </div>
-                </li>
-
-                <li ng-repeat="release in releases | orderBy : 'createdAt' : true"><a ui-sref="project.release({releaseId: release.id})">{{release.name}}</a></li>
-            </ul>
+                    <li ng-repeat="release in releases | orderBy : 'createdAt' : true"><a ui-sref="project.release({releaseId: release.id})">{{release.name}}</a></li>
+                </ul>
+            </div>
         </div>
 
-        <div id="releaseInnerContainer" ui-view class="col-xs-10">
+        <div id="releaseInnerContainer" ui-view>
             <h3>Select a release from the left to view details!</h3>
         </div>
     </div>
@@ -124,46 +126,82 @@
             </div>
         </div>
 
-        <div class="release-story" ng-class="{'showing-details': story.showDetails}" ng-repeat="story in release.stories | orderBy: 'name'">
-            <button id="deleteStory" class="btn btn-danger pull-right" ng-click="removeStory(story)" ng-show="story.editing && !story.isNew">
-                <i class="glyphicon glyphicon-remove"></i>
-                Delete Story
-            </button>
+        <div id="releaseStoryList">
+            <div class="release-story" ng-class="{'showing-details': story.showDetails}" ng-repeat="story in release.stories | orderBy: 'name'">
+                <button id="deleteStory" class="btn btn-danger pull-right" ng-click="removeStory(story)" ng-show="story.editing && !story.isNew">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    Delete Story
+                </button>
 
-            <button id="editStory" class="btn btn-primary pull-right" ng-click="editStory(story)" ng-show="!story.editing && story.showDetails">
-                <i class="glyphicon glyphicon-edit"></i>
-                Edit Story
-            </button>
+                <button id="editStory" class="btn btn-primary pull-right" ng-click="editStory(story)" ng-show="!story.editing && story.showDetails">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    Edit Story
+                </button>
 
-            <div class="story-name">
-                <h4 ng-show="!story.editing">{{story.name}}</h4>
-                <input class="form-control" type="text" ng-model="story.name" ng-show="story.editing" placeholder="Enter Story Name">
+                <div class="story-name">
+                    <h4 ng-show="!story.editing">{{story.name}}</h4>
+                    <input class="form-control" type="text" ng-model="story.name" ng-show="story.editing" placeholder="Enter Story Name">
+                </div>
+
+                <div class="editing-story-controls pull-right" ng-show="story.editing">
+                    <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                    <i class="glyphicon glyphicon-remove crud-action" ng-click="cancelEditingStory(story)"></i>
+                </div>
+
+                <div class="story-notes-container" ng-show="story.showDetails">
+                    <p class="story-notes" ng-show="!story.editing">{{story.notes}}</p>
+                    <textarea class="form-control story-notes-editor" ng-model="story.notes" ng-show="story.editing" placeholder="Notes"></textarea>
+                </div>
+
+                <div class="story-tests-container">
+                    <h4 class="test-status" ng-show="!story.showDetails">Test status: {{getTestStatus(story)}}</h4>
+                    <h4 ng-show="story.showDetails">Tests:</h4>
+                    <div class="test-details-container" ng-show="story.showDetails">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="env in getUniqueEnvironments()">{{env}}</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="test in story.tests | orderBy: 'testNotes'">
+                                    <td ng-repeat="env in test.environments">
+                                        <input type="checkbox" ng-model="env.completed" ng-show="!test.editing && env.inUse" ng-change="saveRelease()"/>
+                                        <input type="checkbox" ng-model="env.inUse" ng-show="test.editing"/>
+                                    </td>
+                                    <td>
+                                        <div class="test-controls pull-right" ng-show="!test.editing">
+                                            <i class="glyphicon glyphicon-edit crud-action edit-test" ng-click="editTest(test)"></i>
+                                            <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTest(story, test)"></i>
+                                        </div>
+                                        <p class="test-notes" ng-show="!test.editing">{{test.testNotes}}</p>
+
+                                        <div class="editing-test-controls pull-right" ng-show="test.editing">
+                                            <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                                            <i class="glyphicon glyphicon-remove crud-action" ng-click="cancelEditingTest(story, test)"></i>
+                                        </div>
+
+                                        <textarea class="form-control test-notes-editor" ng-model="test.testNotes" ng-show="test.editing" placeholder="Notes"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-success" ng-click="addTest(story)"><i class="glyphicon glyphicon-plus-sign"></i>Add New Test</button>
+                    </div>
+                </div>
+
+                <ul class="story-tags">
+                    <li class="story-tag" ng-repeat="tag in story.tags | orderBy: ''">
+                        <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)"></i>
+                        {{tag}}
+                    </li>
+                </ul>
+
+                <i class="toggle-story-details glyphicon crud-action"
+                   ng-class="{'glyphicon-resize-full': !story.showDetails, 'glyphicon-resize-small': story.showDetails}"
+                   ng-click="toggleStoryDetails(story)"></i>
             </div>
-
-            <div class="editing-story-controls pull-right" ng-show="story.editing">
-                <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
-                <i class="glyphicon glyphicon-remove crud-action" ng-click="cancelEditingStory(story)"></i>
-            </div>
-
-            <div class="story-tests-container">
-                <h4 class="test-status" ng-show="!story.showDetails">Test status: {{getTestStatus(story)}}</h4>
-            </div>
-
-            <div class="story-notes-container" ng-show="story.showDetails">
-                <p class="story-notes" ng-show="!story.editing">{{story.notes}}</p>
-                <textarea class="form-control story-notes-editor" ng-model="story.notes" ng-show="story.editing" placeholder="Notes"></textarea>
-            </div>
-
-            <ul class="story-tags">
-                <li class="story-tag" ng-repeat="tag in story.tags | orderBy: 'name'">
-                    <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)"></i>
-                    {{tag}}
-                </li>
-            </ul>
-
-            <i class="toggle-story-details glyphicon crud-action"
-               ng-class="{'glyphicon-resize-full': !story.showDetails, 'glyphicon-resize-small': story.showDetails}"
-               ng-click="toggleStoryDetails(story)"></i>
         </div>
     </div>
 </script>
