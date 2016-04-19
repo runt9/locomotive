@@ -192,9 +192,20 @@
                 </div>
 
                 <ul class="story-tags">
-                    <li class="story-tag" ng-repeat="tag in story.tags | orderBy: ''">
-                        <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)"></i>
-                        {{tag}}
+                    <li class="story-tag" ng-repeat="tag in story.tags | orderBy: ['-isNew', '']">
+                        <div ng-show="!tag.isNew">
+                            <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)" ng-show="!tag.isNew"></i>
+                            {{tag}}
+                        </div>
+
+                        <div ng-show="tag.isNew">
+                            <i class="glyphicon glyphicon-save crud-action" ng-click="saveTag(story, tag)"></i>
+                            <i class="glyphicon glyphicon-remove crud-action" ng-click="cancelAddingTag(story)"></i>
+                            <input class="form-control" type="text" ng-model="tag.name" placeholder="Tag Name">
+                        </div>
+                    </li>
+                    <li class="story-tag" ng-show="!isAddingTag(story)">
+                        <i class="glyphicon glyphicon-plus-sign crud-action" ng-click="addTag(story)"></i>
                     </li>
                 </ul>
 

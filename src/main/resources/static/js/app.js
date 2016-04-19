@@ -335,6 +335,13 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
     };
 
     $scope.editTest = function(test) {
+        lodash.each($scope.release.stories, function(s) {
+            lodash.each(s.tests, function (t) {
+                delete t.editing;
+                delete t.isNew;
+            });
+        });
+
         $scope.preEditTest = lodash.cloneDeep(test);
         test.editing = true;
     };
@@ -353,6 +360,34 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
 
     $scope.removeTest = function(story, test) {
         lodash.remove(story.tests, test);
+        $scope.saveRelease();
+    };
+
+    $scope.addTag = function(story) {
+        lodash.each($scope.release.stories, function (s) {
+            $scope.cancelAddingTag(s);
+        });
+
+        if (story.tags === null) {
+            story.tags = []
+        }
+
+        story.tags.push({isNew: true});
+    };
+
+    $scope.cancelAddingTag = function(story) {
+        lodash.remove(story.tags, function (t) {
+            return t.isNew;
+        });
+    };
+    
+    $scope.isAddingTag = function(story) {
+        return lodash.find(story.tags, {isNew: true}) !== undefined;
+    };
+    
+    $scope.saveTag = function (story, tag) {
+        lodash.remove(story.tags, tag);
+        story.tags.push(tag.name);
         $scope.saveRelease();
     };
 });
