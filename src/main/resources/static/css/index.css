@@ -32,7 +32,7 @@ html, body, #indexContainer, #projectInnerContainer {
 }
 
 .crud-action:hover {
-    color: #76b6cf;
+    color: #76b6cf !important;
     cursor: pointer;
 }
 
@@ -128,4 +128,75 @@ html, body, #indexContainer, #projectInnerContainer {
 #releaseList {
     margin-top: 10px;
     padding: 10px;
+}
+
+.release-story {
+    height: 125px;
+    border: 2px outset #ccc;
+    margin: 10px;
+    position: relative;
+    text-align: left;
+    padding-left: 10px;
+    -webkit-transition: height 0.5s;
+    -moz-transition: height 0.5s;
+    -ms-transition: height 0.5s;
+    -o-transition: height 0.5s;
+    transition: height 0.5s;
+}
+
+.release-story.showing-details {
+    height: 350px;
+}
+
+.test-status {
+    position: absolute;
+}
+
+.story-name input {
+    width: 40%;
+    margin-top: 10px;
+}
+
+.story-tags {
+    text-align: left;
+    position: absolute;
+    bottom: 0;
+    padding: 0;
+}
+
+.story-tag {
+    list-style-type: none;
+    display: inline-block;
+    border: 2px solid #6FA9CC;
+    margin: 0 5px;
+    padding: 0 5px;
+    border-radius: 10px;
+}
+
+.story-tag .glyphicon {
+    padding: 0 3px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.editing-story-controls {
+    font-size: 1.6em;
+    margin-right: 30px;
+}
+
+.toggle-story-details {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    top: auto;
+    font-size: 1.5em;
+}
+
+.story-notes {
+    overflow: auto;
+    height: 100px;
+}
+
+.story-notes-editor {
+    height: 100px !important;
 }

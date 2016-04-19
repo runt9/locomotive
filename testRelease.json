@@ -1,13 +1,13 @@
 {
-  "projectId": "AVQrc6ueSu1uqvFAUZu7",
+  "projectId": "AVQsN-ujzZhTmLwf7ams",
   "name": "Test Release 2",
   "stories": [
     {
       "name": "Test Story 1",
       "notes": "lorem ipsum etc",
       "tests": [
-        {"testNotes": "foo bar baz bash", "environments": ["dev", "stage", "prod"]},
-        {"testNotes": "bar foo bash baz", "environments": ["dev", "prod"]}
+        {"testNotes": "foo bar baz bash", "environments": [{"name": "dev", "completed": false}, {"name": "stage", "completed": false}, {"name": "prod", "completed": false}]},
+        {"testNotes": "bar foo bash baz", "environments": [{"name": "dev", "completed": true}, {"name": "prod", "completed": false}]}
       ],
       "tags": ["tag1", "tag2", "tag3"]
     },
@@ -15,8 +15,8 @@
       "name": "Test Story 2",
       "notes": "lorem ipsum foobar",
       "tests": [
-        {"testNotes": "achey breaky heart", "environments": ["stage", "prod"]},
-        {"testNotes": "nononononon", "environments": ["prod"]}
+        {"testNotes": "achey breaky heart", "environments": [{"name": "stage", "completed": true}, {"name": "prod", "completed": false}]},
+        {"testNotes": "nononononon", "environments": [{"name": "prod", "completed": false}]}
       ],
       "tags": ["tag1", "tag3", "tag4"]
     }

@@ -195,18 +195,25 @@ app.controller('SelectedProjectController', function ($scope, $stateParams, $sta
     };
 });
 
-app.controller('SelectedReleaseController', function ($scope, $stateParams, $state, ApiService) {
+app.controller('SelectedReleaseController', function ($scope, $stateParams, $state, lodash, ApiService) {
     $scope.release = null;
     $scope.editingName = false;
+    $scope.preEditStory = null;
     
     ApiService.getObject(ApiService.baseUris.release, $stateParams.releaseId).then(function (data) {
         $scope.release = data;
     });
 
     $scope.saveRelease = function () {
+        lodash.map($scope.release.stories, function(s) {
+            delete s.editing;
+            delete s.isNew;
+        });
+
         ApiService.saveObject($scope.release).then(function () {
             $scope.editingName = false;
             $scope.$parent.updateReleases();
+            $scope.storyToAdd = {};
         });
     };
 
@@ -215,5 +222,68 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
             $scope.$parent.updateReleases();
             $state.go('project');
         });
+    };
+
+    $scope.getTestStatus = function(story) {
+        var completed = 0,
+            total = 0;
+
+        lodash.each(story.tests, function(t) {
+            total++;
+
+            if (lodash.find(t.environments, {completed: false}) === undefined) {
+                completed++;
+            }
+        });
+
+        return completed + ' complete / ' + total + ' total';
+    };
+    
+    $scope.toggleStoryDetails = function (story) {
+        var show = !story.showDetails;
+        
+        lodash.each($scope.release.stories, function (s) {
+            s.showDetails = false;
+            $scope.cancelEditingStory(s);
+        });
+        
+        if (show) {
+            story.showDetails = true;
+        }
+    };
+    
+    $scope.addStory = function() {
+        if ($scope.release.stories === null) {
+            $scope.release.stories = []
+        }
+
+        $scope.release.stories.unshift({editing: true, isNew: true, showDetails: true});
+    };
+
+    $scope.editStory = function(story) {
+        $scope.preEditStory = story;
+        story.editing = true;
+    };
+    
+    $scope.cancelEditingStory = function(story) {
+        lodash.remove($scope.release.stories, function (s) {
+            return s.editing;
+        });
+
+        if (!story.isNew && $scope.preEditStory !== null) {
+            $scope.preEditStory.editing = false;
+            $scope.release.stories.push($scope.preEditStory);
+            $scope.preEditStory = null;
+        }
+    };
+
+    $scope.removeStory = function(story) {
+        lodash.remove($scope.release.stories, story);
+        $scope.saveRelease();
+    };
+
+    $scope.removeTag = function(story, tag) {
+        lodash.remove(story.tags, function (t) { return t === tag; });
+        $scope.saveRelease();
     };
 });
