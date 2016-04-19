@@ -192,9 +192,9 @@
                 </div>
 
                 <ul class="story-tags">
-                    <li class="story-tag" ng-repeat="tag in story.tags | orderBy: ''">
+                    <li class="story-tag" ng-repeat="tag in story.tags | orderBy: ['-isNew', '']">
                         <div ng-show="!tag.isNew">
-                            <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)" ng-show="!isAddingTag(story)"></i>
+                            <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)" ng-show="!tag.isNew"></i>
                             {{tag}}
                         </div>
 

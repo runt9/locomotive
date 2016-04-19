@@ -368,7 +368,7 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
             story.tags = []
         }
 
-        story.tags.unshift({isNew: true});
+        story.tags.push({isNew: true});
     };
 
     $scope.cancelAddingTag = function(story) {
