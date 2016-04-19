@@ -31,7 +31,7 @@ html, body, #indexContainer, #projectInnerContainer {
     margin-top: 5px;
 }
 
-.project-action:hover {
+.crud-action:hover {
     color: #76b6cf;
     cursor: pointer;
 }
@@ -79,9 +79,53 @@ html, body, #indexContainer, #projectInnerContainer {
 
 #projectSidebar h2 {
     border-bottom: 2px solid #dddddd;
+    padding-bottom: 10px;
 }
 
 #releaseList {
     list-style-type: none;
     padding-left: 0;
+}
+
+#releaseInnerContainer {
+    padding: 0;
+}
+
+#releaseNameContainer {
+    border-bottom: 2px solid #dddddd;
+}
+
+#editReleaseName {
+    font-size: 0.4em;
+    vertical-align: super;
+}
+
+#releaseNameEditing {
+    width: 20%;
+    margin: 0 auto 20px;
+}
+
+#releaseNameEditing input {
+    width: 90%;
+    margin-top: 9px;
+}
+
+#saveReleaseName {
+    float: right;
+    margin-top: 5px;
+    font-size: 1.3em;
+}
+
+#releaseToAdd input {
+    width: 80%;
+}
+
+#releaseToAddControls {
+    float: right;
+    margin-top: 5px;
+}
+
+#releaseList {
+    margin-top: 10px;
+    padding: 10px;
 }
