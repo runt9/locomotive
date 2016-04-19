@@ -44,7 +44,7 @@
             Click on one to view the releases for that project, or create a new project!
         </h4>
 
-        <button class="btn btn-primary pull-right" ng-click="projectToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
+        <button class="btn btn-success pull-right" ng-click="projectToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Project</button>
         <ul id="projectList">
             <li ng-show="projectToAdd.name !== undefined">
                 <div id="projectToAdd">
@@ -64,6 +64,7 @@
 </script>
 
 <script type="text/ng-template" id="selectedProject.html">
+    <a ui-sref="index" class="pull-left"><-- Home</a>
     <button id="deleteProject" class="btn btn-danger pull-right" ng-click="removeProject()"><i class="glyphicon glyphicon-remove"></i>Delete Project</button>
 
     <div id="projectName" ng-show="!editingName">
@@ -81,7 +82,7 @@
     <div id="selectedProjectContainer">
         <div id="projectSidebar" class="col-xs-2">
             <h2>Releases</h2>
-            <button class="btn btn-primary" ng-click="releaseToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Release</button>
+            <button class="btn btn-success" ng-click="releaseToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Release</button>
             <ul id="releaseList">
                 <li ng-show="releaseToAdd.name !== undefined">
                     <div id="releaseToAdd">
@@ -108,6 +109,7 @@
     <div id="selectedReleaseContainer">
         <div id="releaseNameContainer">
             <button id="deleteRelease" class="btn btn-danger pull-right" ng-click="removeRelease()"><i class="glyphicon glyphicon-remove"></i>Delete Release</button>
+            <button class="btn btn-success pull-right" ng-click="addStory()"><i class="glyphicon glyphicon-plus-sign"></i>Add New Story</button>
             
             <div id="releaseName" ng-show="!editingName">
                 <h2 ng-show="!editingName">
@@ -122,8 +124,46 @@
             </div>
         </div>
 
-        <div class="release-story" ng-repeat="story in release.stories">
-            <h4>{{story.name}}</h4>
+        <div class="release-story" ng-class="{'showing-details': story.showDetails}" ng-repeat="story in release.stories | orderBy: 'name'">
+            <button id="deleteStory" class="btn btn-danger pull-right" ng-click="removeStory(story)" ng-show="story.editing && !story.isNew">
+                <i class="glyphicon glyphicon-remove"></i>
+                Delete Story
+            </button>
+
+            <button id="editStory" class="btn btn-primary pull-right" ng-click="editStory(story)" ng-show="!story.editing && story.showDetails">
+                <i class="glyphicon glyphicon-edit"></i>
+                Edit Story
+            </button>
+
+            <div class="story-name">
+                <h4 ng-show="!story.editing">{{story.name}}</h4>
+                <input class="form-control" type="text" ng-model="story.name" ng-show="story.editing" placeholder="Enter Story Name">
+            </div>
+
+            <div class="editing-story-controls pull-right" ng-show="story.editing">
+                <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                <i class="glyphicon glyphicon-remove crud-action" ng-click="cancelEditingStory(story)"></i>
+            </div>
+
+            <div class="story-tests-container">
+                <h4 class="test-status" ng-show="!story.showDetails">Test status: {{getTestStatus(story)}}</h4>
+            </div>
+
+            <div class="story-notes-container" ng-show="story.showDetails">
+                <p class="story-notes" ng-show="!story.editing">{{story.notes}}</p>
+                <textarea class="form-control story-notes-editor" ng-model="story.notes" ng-show="story.editing" placeholder="Notes"></textarea>
+            </div>
+
+            <ul class="story-tags">
+                <li class="story-tag" ng-repeat="tag in story.tags | orderBy: 'name'">
+                    <i class="glyphicon glyphicon-remove crud-action" ng-click="removeTag(story, tag)"></i>
+                    {{tag}}
+                </li>
+            </ul>
+
+            <i class="toggle-story-details glyphicon crud-action"
+               ng-class="{'glyphicon-resize-full': !story.showDetails, 'glyphicon-resize-small': story.showDetails}"
+               ng-click="toggleStoryDetails(story)"></i>
         </div>
     </div>
 </script>

@@ -4,12 +4,12 @@ import java.util.List;
 
 public class StoryTest {
     String testNotes;
-    List<String> environments;
+    List<StoryTestEnvironment> environments;
 
     public StoryTest() {
     }
 
-    public StoryTest(String testNotes, List<String> environments) {
+    public StoryTest(String testNotes, List<StoryTestEnvironment> environments) {
         this.testNotes = testNotes;
         this.environments = environments;
     }
@@ -22,11 +22,11 @@ public class StoryTest {
         this.testNotes = testNotes;
     }
 
-    public List<String> getEnvironments() {
+    public List<StoryTestEnvironment> getEnvironments() {
         return environments;
     }
 
-    public void setEnvironments(List<String> environments) {
+    public void setEnvironments(List<StoryTestEnvironment> environments) {
         this.environments = environments;
     }
 }
