@@ -231,6 +231,21 @@
     color: #555;
 }
 
+.story-tag input {
+    height: auto;
+    width: auto;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    float: right;
+}
+
+.story-tag input:focus {
+    border: none;
+    box-shadow: none;
+}
+
 .editing-story-controls {
     font-size: 1.6em;
     margin-right: 30px;
