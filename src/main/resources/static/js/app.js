@@ -364,6 +364,10 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
     };
 
     $scope.addTag = function(story) {
+        lodash.each($scope.release.stories, function (s) {
+            $scope.cancelAddingTag(s);
+        });
+
         if (story.tags === null) {
             story.tags = []
         }
