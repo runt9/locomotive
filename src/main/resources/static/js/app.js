@@ -7,7 +7,7 @@ var app = angular.module('locomotive', [
 app.config(function ($stateProvider) {
     $stateProvider
         .state('index', {
-            url: '/',
+            url: '',
             templateUrl: 'projectHome.html',
             controller: 'ProjectHomeController'
         })
@@ -77,8 +77,8 @@ app.factory('ApiService', function ($q, $http, MessagesService) {
             release: '/api/releases'
         },
 
-        getProject: function (id) {
-            return baseApiGet(this.baseUris.project + '/' + id);
+        getObject: function (endpoint, id) {
+            return baseApiGet(endpoint + '/' + id);
         },
 
         getProjects: function () {
@@ -139,13 +139,9 @@ app.controller('ProjectHomeController', function($scope, lodash, ApiService, Mes
         $scope.projects = data.projects;
     });
     
-    $scope.addProject = function() {
-        $scope.projectToAdd.name = '';
-    };
-
     $scope.saveProject = function () {
         if ($scope.projectToAdd.name.length === 0) {
-            MessagesService.setError('Project must have a name!')
+            MessagesService.setError('Project must have a name!');
             return;
         }
 
@@ -160,14 +156,18 @@ app.controller('SelectedProjectController', function ($scope, $stateParams, $sta
     $scope.releases = [];
     $scope.project = null;
     $scope.editingName = false;
+    $scope.releaseToAdd = {};
 
-    ApiService.getProject($stateParams.projectId).then(function (data) {
+    ApiService.getObject(ApiService.baseUris.project, $stateParams.projectId).then(function (data) {
         $scope.project = data;
+        $scope.updateReleases();
+    });
 
+    $scope.updateReleases = function() {
         ApiService.getReleasesForProject($stateParams.projectId).then(function (data) {
             $scope.releases = data.releases;
         });
-    });
+    };
 
     $scope.removeProject = function() {
         ApiService.removeObject($scope.project).then(function () {
@@ -180,8 +180,40 @@ app.controller('SelectedProjectController', function ($scope, $stateParams, $sta
             $scope.editingName = false;
         });
     };
+
+    $scope.saveRelease = function () {
+        if ($scope.releaseToAdd.name.length === 0) {
+            MessagesService.setError('Release must have a name!');
+            return;
+        }
+
+        $scope.releaseToAdd.projectId = $scope.project.id;
+        ApiService.createObject(ApiService.baseUris.release, $scope.releaseToAdd).then(function (data) {
+            $scope.releases.push(data);
+            $scope.releaseToAdd = {};
+        });
+    };
 });
 
-app.controller('SelectedReleaseController', function ($stateParams, ApiService) {
+app.controller('SelectedReleaseController', function ($scope, $stateParams, $state, ApiService) {
+    $scope.release = null;
+    $scope.editingName = false;
     
+    ApiService.getObject(ApiService.baseUris.release, $stateParams.releaseId).then(function (data) {
+        $scope.release = data;
+    });
+
+    $scope.saveRelease = function () {
+        ApiService.saveObject($scope.release).then(function () {
+            $scope.editingName = false;
+            $scope.$parent.updateReleases();
+        });
+    };
+
+    $scope.removeRelease = function () {
+        ApiService.removeObject($scope.release).then(function () {
+            $scope.$parent.updateReleases();
+            $state.go('project');
+        });
+    };
 });

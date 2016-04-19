@@ -49,14 +49,14 @@
             <li ng-show="projectToAdd.name !== undefined">
                 <div id="projectToAdd">
                     <div id="projectToAddControls">
-                        <i class="glyphicon glyphicon-save project-action" ng-click="saveProject()"></i>
-                        <i class="glyphicon glyphicon-remove project-action" ng-click="projectToAdd = {}"></i>
+                        <i class="glyphicon glyphicon-save crud-action" ng-click="saveProject()"></i>
+                        <i class="glyphicon glyphicon-remove crud-action" ng-click="projectToAdd = {}"></i>
                     </div>
 
                     <input class="form-control" type="text" ng-model="projectToAdd.name" placeholder="Enter Project Name">
                 </div>
             </li>
-            <li ng-repeat="project in projects | orderBy: 'name'">
+            <li ng-repeat="project in projects | orderBy : 'name'">
                 <a ui-sref="project({projectId: project.id})">{{project.name}}</a>
             </li>
         </ul>
@@ -69,29 +69,61 @@
     <div id="projectName" ng-show="!editingName">
         <h2 ng-show="!editingName">
             {{project.name}}
-            <i id="editProjectName" class="glyphicon glyphicon-edit project-action" ng-click="editingName = true"></i>
+            <i id="editProjectName" class="glyphicon glyphicon-edit crud-action" ng-click="editingName = true"></i>
         </h2>
     </div>
 
     <div id="projectNameEditing" ng-show="editingName">
-        <i id="saveProjectName" class="glyphicon glyphicon-save project-action" ng-click="saveProject()"></i>
+        <i id="saveProjectName" class="glyphicon glyphicon-save crud-action" ng-click="saveProject()"></i>
         <input class="form-control" type="text" ng-model="project.name" ng-show="editingName">
     </div>
 
     <div id="selectedProjectContainer">
         <div id="projectSidebar" class="col-xs-2">
             <h2>Releases</h2>
+            <button class="btn btn-primary" ng-click="releaseToAdd.name = ''"><i class="glyphicon glyphicon-plus-sign"></i>Add New Release</button>
             <ul id="releaseList">
-                <li ng-repeat="release in releases"><a ui-sref="project.release({releaseId: release.id})">{{release.name}}</a></li>
+                <li ng-show="releaseToAdd.name !== undefined">
+                    <div id="releaseToAdd">
+                        <div id="releaseToAddControls">
+                            <i class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                            <i class="glyphicon glyphicon-remove crud-action" ng-click="releaseToAdd = {}"></i>
+                        </div>
+
+                        <input class="form-control" type="text" ng-model="releaseToAdd.name" placeholder="Enter Release Name">
+                    </div>
+                </li>
+
+                <li ng-repeat="release in releases | orderBy : 'createdAt' : true"><a ui-sref="project.release({releaseId: release.id})">{{release.name}}</a></li>
             </ul>
         </div>
 
-        <div ui-view class="col-xs-10"></div>
+        <div id="releaseInnerContainer" ui-view class="col-xs-10">
+            <h3>Select a release from the left to view details!</h3>
+        </div>
     </div>
 </script>
 
 <script type="text/ng-template" id="selectedRelease.html">
     <div id="selectedReleaseContainer">
+        <div id="releaseNameContainer">
+            <button id="deleteRelease" class="btn btn-danger pull-right" ng-click="removeRelease()"><i class="glyphicon glyphicon-remove"></i>Delete Release</button>
+            
+            <div id="releaseName" ng-show="!editingName">
+                <h2 ng-show="!editingName">
+                    {{release.name}}
+                    <i id="editReleaseName" class="glyphicon glyphicon-edit crud-action" ng-click="editingName = true"></i>
+                </h2>
+            </div>
 
+            <div id="releaseNameEditing" ng-show="editingName">
+                <i id="saveReleaseName" class="glyphicon glyphicon-save crud-action" ng-click="saveRelease()"></i>
+                <input class="form-control" type="text" ng-model="release.name" ng-show="editingName">
+            </div>
+        </div>
+
+        <div class="release-story" ng-repeat="story in release.stories">
+            <h4>{{story.name}}</h4>
+        </div>
     </div>
 </script>
