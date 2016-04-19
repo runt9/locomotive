@@ -1,15 +1,22 @@
-html, body, #indexContainer, #projectInnerContainer {
-    height: 100%;
-}
-
 #indexContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     text-align: center;
     width: 80%;
     margin: 0 auto;
+    display: flex;
 }
 
 #messagesContainer {
-    margin-top: 20px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
 }
 
 #projectList {
@@ -38,6 +45,12 @@ html, body, #indexContainer, #projectInnerContainer {
 
 #projectInnerContainer {
     padding: 10px 0;
+    height: 95%;
+    width: 100%;
+}
+
+#projectName h2 {
+    margin-top: 0;
 }
 
 #editProjectName {
@@ -61,25 +74,36 @@ html, body, #indexContainer, #projectInnerContainer {
 }
 
 #deleteProject {
-    margin-top: 20px;
+
 }
 
 #selectedProjectContainer {
     height: 100%;
-    overflow: auto;
     border: 2px solid #aaaaaa;
     border-radius: 2px;
+    display: flex;
 }
 
 #projectSidebar {
     border-right: 2px solid #dddddd;
     height: 100%;
+    overflow: auto;
     padding: 0;
+    width: 15%;
 }
 
 #projectSidebar h2 {
     border-bottom: 2px solid #dddddd;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    margin: 0;
+    height: 10%;
+}
+
+#releaseListContainer {
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
 }
 
 #releaseList {
@@ -89,10 +113,30 @@ html, body, #indexContainer, #projectInnerContainer {
 
 #releaseInnerContainer {
     padding: 0;
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#selectedReleaseContainer {
+    height: 100%;
+}
+
+#releaseStoryList {
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #releaseNameContainer {
     border-bottom: 2px solid #dddddd;
+    height: 10%;
+    padding: 15px;
+}
+
+#releaseNameContainer h2 {
+    margin: 0;
 }
 
 #editReleaseName {
@@ -131,25 +175,32 @@ html, body, #indexContainer, #projectInnerContainer {
 }
 
 .release-story {
-    height: 125px;
+    max-height: 125px;
     border: 2px outset #ccc;
     margin: 10px;
     position: relative;
     text-align: left;
     padding-left: 10px;
-    -webkit-transition: height 0.5s;
-    -moz-transition: height 0.5s;
-    -ms-transition: height 0.5s;
-    -o-transition: height 0.5s;
-    transition: height 0.5s;
+    overflow: hidden;
+    -webkit-transition: max-height ease-in-out 0.5s;
+    -moz-transition: max-height ease-in-out 0.5s;
+    -ms-transition: max-height ease-in-out 0.5s;
+    -o-transition: max-height ease-in-out 0.5s;
+    transition: max-height ease-in-out 0.5s;
 }
 
 .release-story.showing-details {
-    height: 350px;
+    max-height: 500px;
+    overflow: hidden;
+    -webkit-transition: max-height ease-in-out 0.5s;
+    -moz-transition: max-height ease-in-out 0.5s;
+    -ms-transition: max-height ease-in-out 0.5s;
+    -o-transition: max-height ease-in-out 0.5s;
+    transition: max-height ease-in-out 0.5s;
 }
 
 .test-status {
-    position: absolute;
+    position: relative;
 }
 
 .story-name input {
@@ -159,9 +210,10 @@ html, body, #indexContainer, #projectInnerContainer {
 
 .story-tags {
     text-align: left;
-    position: absolute;
+    position: relative;
     bottom: 0;
     padding: 0;
+    margin-top: 10px;
 }
 
 .story-tag {
@@ -194,9 +246,25 @@ html, body, #indexContainer, #projectInnerContainer {
 
 .story-notes {
     overflow: auto;
-    height: 100px;
+    max-height: 100px;
 }
 
 .story-notes-editor {
     height: 100px !important;
+}
+
+.test-notes-editor {
+    width: 90%;
+}
+
+.editing-test-controls {
+    font-size: 1.6em;
+    margin-top: 10px;
+}
+
+.edit-test {
+    float: left;
+    margin-right: 5px;
+    margin-top: 3px;
+    font-size: 0.8em;
 }

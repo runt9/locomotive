@@ -3,13 +3,15 @@ package com.runt9.model;
 public class StoryTestEnvironment {
     String name;
     boolean completed;
+    boolean inUse;
 
     public StoryTestEnvironment() {
     }
 
-    public StoryTestEnvironment(String name, boolean completed) {
+    public StoryTestEnvironment(String name, boolean completed, boolean inUse) {
         this.name = name;
         this.completed = completed;
+        this.inUse = inUse;
     }
 
     public String getName() {
@@ -26,5 +28,13 @@ public class StoryTestEnvironment {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isInUse() {
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse) {
+        this.inUse = inUse;
     }
 }

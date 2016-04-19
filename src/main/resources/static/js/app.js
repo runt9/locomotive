@@ -199,13 +199,19 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
     $scope.release = null;
     $scope.editingName = false;
     $scope.preEditStory = null;
+    $scope.preEditTest = null;
     
     ApiService.getObject(ApiService.baseUris.release, $stateParams.releaseId).then(function (data) {
         $scope.release = data;
     });
 
     $scope.saveRelease = function () {
-        lodash.map($scope.release.stories, function(s) {
+        lodash.each($scope.release.stories, function(s) {
+            lodash.each(s.tests, function (t) {
+                delete t.editing;
+                delete t.isNew;
+            });
+
             delete s.editing;
             delete s.isNew;
         });
@@ -213,7 +219,8 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
         ApiService.saveObject($scope.release).then(function () {
             $scope.editingName = false;
             $scope.$parent.updateReleases();
-            $scope.storyToAdd = {};
+            $scope.preEditStory = null;
+            $scope.preEditTest = null;
         });
     };
 
@@ -231,7 +238,7 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
         lodash.each(story.tests, function(t) {
             total++;
 
-            if (lodash.find(t.environments, {completed: false}) === undefined) {
+            if (lodash.find(t.environments, {completed: false, inUse: true}) === undefined) {
                 completed++;
             }
         });
@@ -250,6 +257,24 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
         if (show) {
             story.showDetails = true;
         }
+    };
+
+    $scope.getUniqueEnvironments = function() {
+        var environments = [];
+
+        lodash.each($scope.$parent.releases, function (r) {
+            lodash.each(r.stories, function (s) {
+                lodash.each(s.tests, function (t) {
+                    lodash.each(t.environments, function (e) {
+                        if (lodash.indexOf(environments, e.name) === -1) {
+                            environments.push(e.name);
+                        }
+                    });
+                });
+            });
+        });
+
+        return environments;
     };
     
     $scope.addStory = function() {
@@ -284,6 +309,50 @@ app.controller('SelectedReleaseController', function ($scope, $stateParams, $sta
 
     $scope.removeTag = function(story, tag) {
         lodash.remove(story.tags, function (t) { return t === tag; });
+        $scope.saveRelease();
+    };
+
+    $scope.addTest = function(story) {
+        if (story.tests === null) {
+            story.tests = []
+        }
+
+        var test = {
+            editing: true,
+            isNew: true,
+            environments: []
+        };
+
+        lodash.each($scope.getUniqueEnvironments(), function (e) {
+            test.environments.push({
+                name: e,
+                inUse: false,
+                completed: false
+            });
+        });
+
+        story.tests.unshift(test);
+    };
+
+    $scope.editTest = function(test) {
+        $scope.preEditTest = lodash.cloneDeep(test);
+        test.editing = true;
+    };
+
+    $scope.cancelEditingTest = function(story, test) {
+        lodash.remove(story.tests, function (t) {
+            return t.editing;
+        });
+
+        if (!test.isNew && $scope.preEditTest !== null) {
+            $scope.preEditTest.editing = false;
+            story.tests.push($scope.preEditTest);
+            $scope.preEditTest = null;
+        }
+    };
+
+    $scope.removeTest = function(story, test) {
+        lodash.remove(story.tests, test);
         $scope.saveRelease();
     };
 });
